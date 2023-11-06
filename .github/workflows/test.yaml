@@ -1,0 +1,40 @@
+name: A workflow test action
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: test
+    runs-on: ubuntu-latest
+    env:
+      FOO: BAR
+    steps:
+      - uses: actions/checkout@v3
+      - name: tests
+        uses: ./
+        with:
+          image: python:3.9.17-slim
+          shell: bash
+          run: |
+            function fail() { echo "ERROR: $1"; exit 1; }
+
+            [[ "$FOO" == "BAR" ]] || fail "missing/incorrect FOO env value"
+            [[ "$GITHUB_REPOSITORY_OWNER" == "fduser1" ]] || fail "missing/incorrect TEST_GITHUB_REPOSITORY_OWNER env value"
+            [[ "$RUNNER_OS" == "Linux" ]] || fail "missing/incorrect RUNNER_OS env value"
+            [[ "$GITHUB_ACTIONS" == "true" ]] || fail "missing/incorrect GITHUB_ACTIONS env value"
+            [[ "$CI" == "true" ]] || fail "missing/incorrect CI env value"
+            
+            [[ -e /github/home ]] || fail "/github/home directory missing"
+            [[ -e /github/workflow/event.json ]] || fail "invalid /github/workflow directory"
+            [[ $(ls /github/file_commands/step_* 2>/dev/null | wc -l) -gt 0 ]] || fail "invalid /github/file_commands directory"
+            [[ -e /github/workspace/.git ]] || fail "invalid /github/workspace directory"
+
+            date_str=$(date -d 2023-01-01 '+%Y%m%d')
+            interop_str="date=($date_str)"
+            [[ "$interop_str" == "date=(20230101)" ]] || fail "invalid interpolated string value"
+            [[ -n "${{ github.run_id }}" ]] || fail "\${{ github.run_id }} missing value"
+            [[ "$(python --version)" == "Python 3.9.17" ]] || fail "incorrect python version"

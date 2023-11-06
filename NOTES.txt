@@ -1,0 +1,9 @@
+Reference to GitHub Actions's docker run command logic
+  - https://github.com/actions/runner/blob/main/src/Runner.Worker/Container/DockerCommandManager.cs  
+  - https://github.com/actions/runner/blob/main/src/Runner.Worker/Handlers/ContainerActionHandler.cs
+
+Baseline of Github Action's default docker run command:
+  - uses: docker://ubuntu:22.04
+    with:
+      entrypoint: bash
+      args: -c env
