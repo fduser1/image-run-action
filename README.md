@@ -12,7 +12,7 @@ This GitHub Action allows you to run a shell script against a docker image.
 | Name                  | Requirement | Description |
 | --------------------- | ----------- | ----------- |
 | `image`    | __required__ | Docker image location. Refer to [docker pull](https://docs.docker.com/engine/reference/commandline/pull/) documentation for location format; e.g.<br/><small>  ubuntu:22.04, ubuntu@sha256:c9cf959...., google/cloud-sdk@latest, public.ecr.aws/docker/library/python:3.9</small> |
-| `run`      | __required__ | Shell script to run. _(Do not include shebang)_ |
+| `run`      | __required__ | Shell script to run. _(do not include shebang)_ |
 | `shell`    |  _optional_  | Default: `sh`. Shell within image to run the script; e.g. <small> bash, dash, /usr/bin/zsh</small>  |
 | `options`  |  _optional_  | Additional options to set as a part of the [docker run](https://docs.docker.com/engine/reference/commandline/run/) command. |
 
